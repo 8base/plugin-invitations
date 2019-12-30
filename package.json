@@ -1,0 +1,37 @@
+{
+  "name": "@8base/plugin-invitations",
+  "version": "0.0.1",
+  "description": "8base Plugin Invitations",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet"
+  },
+  "dependencies": {
+    "@sendgrid/mail": "^6.4.0",
+    "graphql": "^14.5.8",
+    "graphql-tag": "^2.10.1",
+    "qs": "^6.9.1",
+    "ramda": "^0.26.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.9",
+    "@typescript-eslint/eslint-plugin": "^2.3.2",
+    "@typescript-eslint/parser": "^2.3.2",
+    "dotenv": "^8.1.0",
+    "eslint": "^6.5.1",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.6.3"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "globalSetup": "./jest.setup.js"
+  },
+  "author": "zouxuoz",
+  "license": "MIT"
+}

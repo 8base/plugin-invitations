@@ -1,0 +1,11 @@
+functions:
+  inviteUser:
+    type: resolver
+    handler:
+      code: src/resolvers/inviteUser/handler.ts
+    schema: src/resolvers/inviteUser/schema.graphql
+  afterInvitationCreate:
+    handler:
+      code: src/triggers/afterInvitationCreate/handler.ts
+    type: trigger.after
+    operation: Invitations.create
