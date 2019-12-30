@@ -1,4 +1,8 @@
+import * as sendgridMail from '@sendgrid/mail';
+
 import handler, { INVITATION_CREATE_MUTATION, AUTHENTICATION_PROFILE_QUERY } from '../handler';
+
+const { INVITATIONS_SENDGRID_TEMPLATE_ID } = process.env;
 
 const context = {
   api: {
@@ -21,7 +25,7 @@ afterEach(() => {
 });
 
 it('Should create user invitation.', async () => {
-  context.api.gqlRequest.mockResolvedValueOnce({ invitationCreate: { id: INVITATION_ID } });
+  context.api.gqlRequest.mockResolvedValueOnce({ invitationCreate: { id: INVITATION_ID, invitedUser: { email: USER.email } } });
 
   const result = await handler(
     {
@@ -50,11 +54,21 @@ it('Should create user invitation.', async () => {
       invitationId: INVITATION_ID,
     },
   });
+
+  expect(sendgridMail.send).toHaveBeenNthCalledWith(1, {
+    to: 'brethren@overeasiness.co.uk',
+    from: 'vladimir.osipov@8base.com',
+    templateId: INVITATIONS_SENDGRID_TEMPLATE_ID,
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    dynamic_template_data: {
+      invitationLink: 'http://localhost:3001/invite?id=INVITATION_ID&email=brethren%40overeasiness.co.uk',
+    },
+  });
 });
 
 it('Should create user invitation with auth profile.', async () => {
   context.api.gqlRequest.mockResolvedValueOnce({ authenticationProfile: { roles: { items: [{ id: ROLE_ID }] } } });
-  context.api.gqlRequest.mockResolvedValueOnce({ invitationCreate: { id: INVITATION_ID } });
+  context.api.gqlRequest.mockResolvedValueOnce({ invitationCreate: { id: INVITATION_ID, invitedUser: { email: USER.email } } });
 
   const result = await handler(
     {
@@ -89,6 +103,16 @@ it('Should create user invitation with auth profile.', async () => {
   expect(result).toEqual({
     data: {
       invitationId: INVITATION_ID,
+    },
+  });
+
+  expect(sendgridMail.send).toHaveBeenNthCalledWith(1, {
+    to: 'brethren@overeasiness.co.uk',
+    from: 'vladimir.osipov@8base.com',
+    templateId: INVITATIONS_SENDGRID_TEMPLATE_ID,
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    dynamic_template_data: {
+      invitationLink: 'http://localhost:3001/invite?id=INVITATION_ID&email=brethren%40overeasiness.co.uk',
     },
   });
 });
