@@ -16,6 +16,8 @@ export const INVITATION_CREATE_MUTATION = gql`
       id
       invitedUser {
         email
+        firstName
+        lastName
       }
     }
   }
@@ -85,6 +87,8 @@ export default async (event: any, ctx: any): Promise<InviteUserResult> => {
   const searchString = qs.stringify({
     id: invitationCreate.id,
     email: invitationCreate.invitedUser.email,
+    firstName: invitationCreate.invitedUser.firstName,
+    lastName: invitationCreate.invitedUser.lastName,
   });
 
   const msg = {

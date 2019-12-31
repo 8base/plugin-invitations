@@ -25,7 +25,16 @@ afterEach(() => {
 });
 
 it('Should create user invitation.', async () => {
-  context.api.gqlRequest.mockResolvedValueOnce({ invitationCreate: { id: INVITATION_ID, invitedUser: { email: USER.email } } });
+  context.api.gqlRequest.mockResolvedValueOnce({
+    invitationCreate: {
+      id: INVITATION_ID,
+      invitedUser: {
+        email: USER.email,
+        firstName: USER.firstName,
+        lastName: USER.lastName,
+      },
+    },
+  });
 
   const result = await handler(
     {
@@ -61,14 +70,25 @@ it('Should create user invitation.', async () => {
     templateId: INVITATIONS_SENDGRID_TEMPLATE_ID,
     // eslint-disable-next-line @typescript-eslint/camelcase
     dynamic_template_data: {
-      invitationLink: 'http://localhost:3001/invite?id=INVITATION_ID&email=brethren%40overeasiness.co.uk',
+      invitationLink:
+        'http://localhost:3001/invite?id=INVITATION_ID&email=brethren%40overeasiness.co.uk&firstName=Allan&lastName=Headington',
     },
   });
 });
 
 it('Should create user invitation with auth profile.', async () => {
   context.api.gqlRequest.mockResolvedValueOnce({ authenticationProfile: { roles: { items: [{ id: ROLE_ID }] } } });
-  context.api.gqlRequest.mockResolvedValueOnce({ invitationCreate: { id: INVITATION_ID, invitedUser: { email: USER.email } } });
+
+  context.api.gqlRequest.mockResolvedValueOnce({
+    invitationCreate: {
+      id: INVITATION_ID,
+      invitedUser: {
+        email: USER.email,
+        firstName: USER.firstName,
+        lastName: USER.lastName,
+      },
+    },
+  });
 
   const result = await handler(
     {
@@ -112,7 +132,8 @@ it('Should create user invitation with auth profile.', async () => {
     templateId: INVITATIONS_SENDGRID_TEMPLATE_ID,
     // eslint-disable-next-line @typescript-eslint/camelcase
     dynamic_template_data: {
-      invitationLink: 'http://localhost:3001/invite?id=INVITATION_ID&email=brethren%40overeasiness.co.uk',
+      invitationLink:
+        'http://localhost:3001/invite?id=INVITATION_ID&email=brethren%40overeasiness.co.uk&firstName=Allan&lastName=Headington',
     },
   });
 });
