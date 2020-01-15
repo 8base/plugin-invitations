@@ -61,9 +61,15 @@ export default async (event: any, ctx: any): Promise<InviteUserResult> => {
   };
 
   if (authProfileId) {
-    const { authenticationProfile } = await ctx.api.gqlRequest(AUTHENTICATION_PROFILE_QUERY, {
-      id: authProfileId,
-    });
+    const { authenticationProfile } = await ctx.api.gqlRequest(
+      AUTHENTICATION_PROFILE_QUERY,
+      {
+        id: authProfileId,
+      },
+      {
+        checkPermissions: false,
+      },
+    );
 
     invitedUser = {
       ...invitedUser,
@@ -74,13 +80,19 @@ export default async (event: any, ctx: any): Promise<InviteUserResult> => {
     };
   }
 
-  const { invitationCreate } = await ctx.api.gqlRequest(INVITATION_CREATE_MUTATION, {
-    data: {
-      invitedUser: {
-        create: invitedUser,
+  const { invitationCreate } = await ctx.api.gqlRequest(
+    INVITATION_CREATE_MUTATION,
+    {
+      data: {
+        invitedUser: {
+          create: invitedUser,
+        },
       },
     },
-  });
+    {
+      checkPermissions: false,
+    },
+  );
 
   sendgridMail.setApiKey(INVITATIONS_SENDGRID_API_KEY);
 
