@@ -45,16 +45,22 @@ it('Should create user invitation.', async () => {
     context,
   );
 
-  expect(context.api.gqlRequest).toHaveBeenCalledWith(INVITATION_CREATE_MUTATION, {
-    data: {
-      invitedUser: {
-        create: {
-          ...USER,
-          status: 'invitationPending',
+  expect(context.api.gqlRequest).toHaveBeenCalledWith(
+    INVITATION_CREATE_MUTATION,
+    {
+      data: {
+        invitedUser: {
+          create: {
+            ...USER,
+            status: 'invitationPending',
+          },
         },
       },
     },
-  });
+    {
+      checkPermissions: false,
+    },
+  );
 
   expect(context.api.gqlRequest).toHaveBeenCalledTimes(1);
 
@@ -100,23 +106,37 @@ it('Should create user invitation with auth profile.', async () => {
     context,
   );
 
-  expect(context.api.gqlRequest).toHaveBeenNthCalledWith(1, AUTHENTICATION_PROFILE_QUERY, {
-    id: AUTH_PROFILE_ID,
-  });
+  expect(context.api.gqlRequest).toHaveBeenNthCalledWith(
+    1,
+    AUTHENTICATION_PROFILE_QUERY,
+    {
+      id: AUTH_PROFILE_ID,
+    },
+    {
+      checkPermissions: false,
+    },
+  );
 
-  expect(context.api.gqlRequest).toHaveBeenNthCalledWith(2, INVITATION_CREATE_MUTATION, {
-    data: {
-      invitedUser: {
-        create: {
-          ...USER,
-          status: 'invitationPending',
-          roles: {
-            connect: [{ id: ROLE_ID }],
+  expect(context.api.gqlRequest).toHaveBeenNthCalledWith(
+    2,
+    INVITATION_CREATE_MUTATION,
+    {
+      data: {
+        invitedUser: {
+          create: {
+            ...USER,
+            status: 'invitationPending',
+            roles: {
+              connect: [{ id: ROLE_ID }],
+            },
           },
         },
       },
     },
-  });
+    {
+      checkPermissions: false,
+    },
+  );
 
   expect(context.api.gqlRequest).toHaveBeenCalledTimes(2);
 
