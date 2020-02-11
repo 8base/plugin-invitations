@@ -35,13 +35,13 @@ export const AUTHENTICATION_PROFILE_QUERY = gql`
   }
 `;
 
-type InviteUserResult = {
+type InvitationSendResult = {
   data: {
     invitationId: string;
   };
 };
 
-export default async (event: any, ctx: any): Promise<InviteUserResult> => {
+export default async (event: any, ctx: any): Promise<InvitationSendResult> => {
   if (
     !INVITATIONS_SENDGRID_API_KEY ||
     !INVITATIONS_SENDGRID_TEMPLATE_ID ||

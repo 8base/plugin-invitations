@@ -1,0 +1,7 @@
+type InvitationResendResponse {
+  success: Boolean!
+}
+
+extend type Mutation {
+  invitationResend(id: ID!): InvitationResendResponse
+}

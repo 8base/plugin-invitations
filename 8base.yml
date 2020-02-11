@@ -1,6 +1,11 @@
 functions:
-  inviteUser:
+  invitationSend:
     type: resolver
     handler:
-      code: src/resolvers/inviteUser/handler.ts
-    schema: src/resolvers/inviteUser/schema.graphql
+      code: src/resolvers/invitationSend/handler.ts
+    schema: src/resolvers/invitationSend/schema.graphql
+  invitationResend:
+    type: resolver
+    handler:
+      code: src/resolvers/invitationResend/handler.ts
+    schema: src/resolvers/invitationResend/schema.graphql

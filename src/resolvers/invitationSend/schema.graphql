@@ -1,0 +1,7 @@
+type InvitationSendResponse {
+  invitationId: ID!
+}
+
+extend type Mutation {
+  invitationSend(user: UserCreateInput!, authProfileId: ID): InvitationSendResponse
+}

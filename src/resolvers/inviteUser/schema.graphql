@@ -1,7 +1,0 @@
-type InvitationsInviteUserResult {
-  invitationId: ID!
-}
-
-extend type InvitationsMutation {
-  inviteUser(user: UserCreateInput!, authProfileId: ID): InvitationsInviteUserResult
-}
