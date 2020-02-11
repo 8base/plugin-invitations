@@ -2,6 +2,6 @@ type InvitationResendResponse {
   success: Boolean!
 }
 
-extend type Mutation {
+extend type InvitationsMutation {
   invitationResend(id: ID!): InvitationResendResponse
 }

@@ -9,3 +9,8 @@ functions:
     handler:
       code: src/resolvers/invitationResend/handler.ts
     schema: src/resolvers/invitationResend/schema.graphql
+  invitationCancel:
+    type: resolver
+    handler:
+      code: src/resolvers/invitationCancel/handler.ts
+    schema: src/resolvers/invitationCancel/schema.graphql

@@ -2,6 +2,6 @@ type InvitationSendResponse {
   invitationId: ID!
 }
 
-extend type Mutation {
+extend type InvitationsMutation {
   invitationSend(user: UserCreateInput!, authProfileId: ID): InvitationSendResponse
 }

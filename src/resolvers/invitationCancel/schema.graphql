@@ -1,0 +1,7 @@
+type InvitationCancelResponse {
+  success: Boolean!
+}
+
+extend type InvitationsMutation {
+  invitationCancel(id: ID!): InvitationCancelResponse
+}

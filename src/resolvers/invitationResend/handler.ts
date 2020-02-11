@@ -14,6 +14,7 @@ export const INVITATION_QUERY = gql`
     invitation(id: $id) {
       id
       invitedUser {
+        id
         email
         firstName
         lastName
