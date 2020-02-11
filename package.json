@@ -4,7 +4,9 @@
   "description": "8base Plugin Invitations",
   "scripts": {
     "test": "jest",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet"
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet",
+    "to-project": "find . -name '*.graphql' -exec sed -i '' \"s/type InvitationsMutation/type Mutation/g; s/type InvitationsQuery/type Query/g;\" {} +",
+    "to-plugin": "find . -name '*.graphql' -exec sed -i '' \"s/type Mutation/type InvitationsMutation/g; s/type Query/type InvitationsQuery/g;\" {} +"
   },
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",
