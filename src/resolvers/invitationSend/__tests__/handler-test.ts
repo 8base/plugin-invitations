@@ -68,6 +68,7 @@ it('Should create user invitation.', async () => {
     data: {
       invitationId: INVITATION_ID,
     },
+    errors: [],
   });
 
   expect(sendgridMail.send).toHaveBeenNthCalledWith(1, {
@@ -144,6 +145,7 @@ it('Should create user invitation with auth profile.', async () => {
     data: {
       invitationId: INVITATION_ID,
     },
+    errors: [],
   });
 
   expect(sendgridMail.send).toHaveBeenNthCalledWith(1, {
@@ -155,5 +157,58 @@ it('Should create user invitation with auth profile.', async () => {
       invitationLink:
         'http://localhost:3001/invite?id=INVITATION_ID&email=brethren%40overeasiness.co.uk&firstName=Allan&lastName=Headington',
     },
+  });
+});
+
+it('Should returns correct error for already invited user.', async () => {
+  context.api.gqlRequest.mockRejectedValueOnce({
+    message: `{"message":"The request is invalid.","details":{"email":"Can't insert data. Field 'email' has unique values."},"code":"ValidationError"}`,
+  });
+
+  const result = await handler(
+    {
+      data: {
+        user: USER,
+      },
+    },
+    context,
+  );
+
+  expect(context.api.gqlRequest).toHaveBeenNthCalledWith(
+    1,
+    INVITATION_CREATE_MUTATION,
+    {
+      data: {
+        invitedUser: {
+          create: {
+            ...USER,
+            status: 'invitationPending',
+          },
+        },
+      },
+    },
+    {
+      checkPermissions: false,
+    },
+  );
+
+  expect(context.api.gqlRequest).toHaveBeenCalledTimes(1);
+
+  expect(result).toEqual({
+    data: {
+      invitationId: null,
+    },
+    errors: [
+      {
+        message: 'The request is invalid.',
+        path: ['user', 'email'],
+        code: 'ValidationError',
+        details: {
+          user: {
+            email: `User with this email already invited`,
+          },
+        },
+      },
+    ],
   });
 });
