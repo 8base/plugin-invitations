@@ -31,7 +31,6 @@ type InvitationResendResult = {
 
 export default async (event: any, ctx: any): Promise<InvitationResendResult> => {
   let success = false;
-
   const { id, sendgridTemplateId } = event.data;
 
   if (
