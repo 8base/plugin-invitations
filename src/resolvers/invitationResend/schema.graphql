@@ -3,5 +3,5 @@ type InvitationResendResponse {
 }
 
 extend type InvitationsMutation {
-  invitationResend(id: ID!): InvitationResendResponse
+  invitationResend(id: ID!, sendgridTemplateId: String): InvitationResendResponse
 }

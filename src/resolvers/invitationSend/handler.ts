@@ -43,9 +43,11 @@ type InvitationSendResult = {
 };
 
 export default async (event: any, ctx: any): Promise<InvitationSendResult> => {
+  const { user, authProfileId, sendgridTemplateId } = event.data;
+
   if (
     !INVITATIONS_SENDGRID_API_KEY ||
-    !INVITATIONS_SENDGRID_TEMPLATE_ID ||
+    (!INVITATIONS_SENDGRID_TEMPLATE_ID && !sendgridTemplateId) ||
     !INVITATIONS_LINK_PREFIX ||
     !INVITATIONS_FROM_EMAIL
   ) {
@@ -53,8 +55,6 @@ export default async (event: any, ctx: any): Promise<InvitationSendResult> => {
       'Please set INVITATIONS_SENDGRID_API_KEY, INVITATIONS_SENDGRID_TEMPLATE_ID, INVITATIONS_LINK_PREFIX, INVITATIONS_FROM_EMAIL environment variables.',
     );
   }
-
-  const { user, authProfileId } = event.data;
 
   let invitedUser = {
     ...user,
@@ -148,10 +148,13 @@ export default async (event: any, ctx: any): Promise<InvitationSendResult> => {
   const msg = {
     to: invitationCreateResponse.invitationCreate.invitedUser.email,
     from: INVITATIONS_FROM_EMAIL,
-    templateId: INVITATIONS_SENDGRID_TEMPLATE_ID,
+    templateId: sendgridTemplateId || INVITATIONS_SENDGRID_TEMPLATE_ID,
     // eslint-disable-next-line @typescript-eslint/camelcase
     dynamic_template_data: {
       invitationLink: `${INVITATIONS_LINK_PREFIX}?${searchString}`,
+      email: invitationCreateResponse.invitationCreate.invitedUser.email,
+      firstName: invitationCreateResponse.invitationCreate.invitedUser.firstName,
+      lastName: invitationCreateResponse.invitationCreate.invitedUser.lastName,
     },
   };
 

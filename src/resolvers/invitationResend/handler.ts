@@ -32,9 +32,11 @@ type InvitationResendResult = {
 export default async (event: any, ctx: any): Promise<InvitationResendResult> => {
   let success = false;
 
+  const { id, sendgridTemplateId } = event.data;
+
   if (
     !INVITATIONS_SENDGRID_API_KEY ||
-    !INVITATIONS_SENDGRID_TEMPLATE_ID ||
+    (!INVITATIONS_SENDGRID_TEMPLATE_ID && !sendgridTemplateId) ||
     !INVITATIONS_LINK_PREFIX ||
     !INVITATIONS_FROM_EMAIL
   ) {
@@ -42,8 +44,6 @@ export default async (event: any, ctx: any): Promise<InvitationResendResult> => 
       'Please set INVITATIONS_SENDGRID_API_KEY, INVITATIONS_SENDGRID_TEMPLATE_ID, INVITATIONS_LINK_PREFIX, INVITATIONS_FROM_EMAIL environment variables.',
     );
   }
-
-  const { id } = event.data;
 
   const { invitation } = await ctx.api.gqlRequest(
     INVITATION_QUERY,
@@ -67,10 +67,13 @@ export default async (event: any, ctx: any): Promise<InvitationResendResult> => 
   const msg = {
     to: invitation.invitedUser.email,
     from: INVITATIONS_FROM_EMAIL,
-    templateId: INVITATIONS_SENDGRID_TEMPLATE_ID,
+    templateId: sendgridTemplateId || INVITATIONS_SENDGRID_TEMPLATE_ID,
     // eslint-disable-next-line @typescript-eslint/camelcase
     dynamic_template_data: {
       invitationLink: `${INVITATIONS_LINK_PREFIX}?${searchString}`,
+      email: invitation.invitedUser.email,
+      firstName: invitation.invitedUser.firstName,
+      lastName: invitation.invitedUser.lastName,
     },
   };
 

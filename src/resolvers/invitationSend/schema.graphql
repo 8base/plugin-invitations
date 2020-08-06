@@ -3,5 +3,5 @@ type InvitationSendResponse {
 }
 
 extend type InvitationsMutation {
-  invitationSend(user: UserCreateInput!, authProfileId: ID): InvitationSendResponse
+  invitationSend(user: UserCreateInput!, authProfileId: ID, sendgridTemplateId: String): InvitationSendResponse
 }
