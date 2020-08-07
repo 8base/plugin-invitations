@@ -79,6 +79,9 @@ it('Should create user invitation.', async () => {
     dynamic_template_data: {
       invitationLink:
         'http://localhost:3001/invite?id=INVITATION_ID&email=brethren%40overeasiness.co.uk&firstName=Allan&lastName=Headington',
+      email: USER.email,
+      firstName: USER.firstName,
+      lastName: USER.lastName,
     },
   });
 });
@@ -156,6 +159,9 @@ it('Should create user invitation with auth profile.', async () => {
     dynamic_template_data: {
       invitationLink:
         'http://localhost:3001/invite?id=INVITATION_ID&email=brethren%40overeasiness.co.uk&firstName=Allan&lastName=Headington',
+      email: USER.email,
+      firstName: USER.firstName,
+      lastName: USER.lastName,
     },
   });
 });
